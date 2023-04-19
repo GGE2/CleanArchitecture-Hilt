@@ -3,11 +3,11 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/nav_graph"
-    app:startDestination="@id/newsFragment">
+    app:startDestination="@id/news_fragment">
 
 
     <fragment
-        android:id="@+id/newsFragment"
+        android:id="@+id/news_fragment"
         android:name="com.self.cleanarchitecture.NewsFragment"
         android:label="fragment_news"
         tools:layout="@layout/fragment_news" >
@@ -16,7 +16,7 @@
             app:destination="@id/infoFragment" />
     </fragment>
     <fragment
-        android:id="@+id/savedFragment"
+        android:id="@+id/saved_fragment"
         android:name="com.self.cleanarchitecture.SavedFragment"
         android:label="fragment_saved"
         tools:layout="@layout/fragment_saved" >
