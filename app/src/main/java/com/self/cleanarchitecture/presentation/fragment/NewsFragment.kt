@@ -1,4 +1,4 @@
-package com.self.cleanarchitecture
+package com.self.cleanarchitecture.presentation.fragment
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment
@@ -6,15 +6,19 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.AbsListView
+import android.widget.SearchView
 import android.widget.Toast
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.self.cleanarchitecture.R
 import com.self.cleanarchitecture.data.util.Resource
 import com.self.cleanarchitecture.databinding.FragmentNewsBinding
 import com.self.cleanarchitecture.presentation.MainActivity
 import com.self.cleanarchitecture.presentation.adapter.NewsAdapter
 import com.self.cleanarchitecture.presentation.viewmodel.NewsViewModel
+import kotlinx.coroutines.MainScope
+import kotlinx.coroutines.launch
 
 
 class NewsFragment : Fragment() {
@@ -49,7 +53,7 @@ class NewsFragment : Fragment() {
         }
         initRecyclerView()
         viewNewsList()
-
+        setSearchView()
     }
 
     private fun viewNewsList() {
@@ -124,5 +128,67 @@ class NewsFragment : Fragment() {
     private fun hideProgressBar(){
         isLoading = false
         fragmentNewsBinding.progressBar.visibility = View.INVISIBLE
+    }
+
+    //search
+    private fun setSearchView(){
+        fragmentNewsBinding.svNews.setOnQueryTextListener(object:SearchView.OnQueryTextListener{
+            override fun onQueryTextSubmit(p0: String?): Boolean {
+                viewModel.searchNews("us",p0.toString(),page)
+                viewSearchedNews()
+                return false
+            }
+
+            override fun onQueryTextChange(p0: String?): Boolean {
+                MainScope().launch {
+                    //delay(2000)
+                    viewModel.searchNews("us",p0.toString(),page)
+                    viewSearchedNews()
+                }
+
+                return false
+            }
+
+        })
+        fragmentNewsBinding.svNews.setOnCloseListener(object:SearchView.OnCloseListener{
+            override fun onClose(): Boolean {
+                initRecyclerView()
+                viewNewsList()
+                return false
+            }
+
+        })
+    }
+
+    fun viewSearchedNews(){
+        viewModel.searchedNews.observe(viewLifecycleOwner) { response ->
+            when (response) {
+                is Resource.Success -> {
+                    hideProgressBar()
+                    response.data?.let {
+                        newsAdapter.differ.submitList(it.articles.toList())
+                        if (it.totalResults % 20 == 0) {
+                            pages = it.totalResults / 20
+                        } else {
+                            pages = it.totalResults / 20 + 1
+                        }
+                        isLastPage = page == pages
+                    }
+                }
+                is Resource.Error -> {
+                    hideProgressBar()
+                    response.message?.let {
+                        Toast.makeText(activity, "An Error occurred : $it", Toast.LENGTH_SHORT)
+                            .show()
+                    }
+                }
+                is Resource.Loading -> {
+                    showProgressBar()
+                }
+                else -> {
+
+                }
+            }
+        }
     }
 }

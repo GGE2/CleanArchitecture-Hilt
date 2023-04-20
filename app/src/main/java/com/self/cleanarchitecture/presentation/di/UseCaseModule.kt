@@ -2,6 +2,8 @@ package com.self.cleanarchitecture.presentation.di
 
 import com.self.cleanarchitecture.domain.repository.NewsRepository
 import com.self.cleanarchitecture.domain.usecase.GetNewHeadlineUseCase
+import com.self.cleanarchitecture.domain.usecase.GetSearchedNewsUseCase
+import com.self.cleanarchitecture.domain.usecase.SaveNewsUseCase
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -20,4 +22,19 @@ class UseCaseModule {
         return GetNewHeadlineUseCase(newsRepository)
     }
 
+
+    @Provides
+    @Singleton
+    fun provideSearchedNewsUseCase(
+        newsRepository: NewsRepository
+    ):GetSearchedNewsUseCase{
+        return GetSearchedNewsUseCase(newsRepository)
+    }
+    @Provides
+    @Singleton
+    fun provideSaveNewsUseCase(
+        newsRepository: NewsRepository
+    ):SaveNewsUseCase{
+        return SaveNewsUseCase(newsRepository)
+    }
 }

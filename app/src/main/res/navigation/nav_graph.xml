@@ -8,7 +8,7 @@
 
     <fragment
         android:id="@+id/news_fragment"
-        android:name="com.self.cleanarchitecture.NewsFragment"
+        android:name="com.self.cleanarchitecture.presentation.fragment.NewsFragment"
         android:label="fragment_news"
         tools:layout="@layout/fragment_news" >
         <action
@@ -17,7 +17,7 @@
     </fragment>
     <fragment
         android:id="@+id/saved_fragment"
-        android:name="com.self.cleanarchitecture.SavedFragment"
+        android:name="com.self.cleanarchitecture.presentation.fragment.SavedFragment"
         android:label="fragment_saved"
         tools:layout="@layout/fragment_saved" >
         <action
@@ -26,7 +26,7 @@
     </fragment>
     <fragment
         android:id="@+id/infoFragment"
-        android:name="com.self.cleanarchitecture.InfoFragment"
+        android:name="com.self.cleanarchitecture.presentation.fragment.InfoFragment"
         android:label="fragment_info"
         tools:layout="@layout/fragment_info" >
         <argument
