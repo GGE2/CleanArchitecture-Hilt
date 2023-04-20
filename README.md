@@ -1,6 +1,9 @@
 # CleanArchitecture-Hilt
 CleanArchitecture , Hilt 공부
 
+### Jetpack Navigation
+- menu 폴더의 id와 navigation 폴더의 id가 일치해야 연동된다 !!! 실수 주의 !!!
+
 
 ### Hilt
 - SingletonComponent
